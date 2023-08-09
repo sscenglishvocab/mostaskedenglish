@@ -1,19 +1,18 @@
 const questionElement = document.getElementById('question');
 const optionsElement = document.getElementById('options');
-const nextBtn = document.getElementById('nextBtn');
 
-const vocabularyQuestions = [
-    { question: 'Abate', options: ['Decrease', 'Increase', 'Maintain', 'Estimate'], correct: 'Decrease' },
-    { question: 'Benevolent', options: ['Malevolent', 'Friendly', 'Hostile', 'Unkind'], correct: 'Friendly' },
-    { question: 'Cacophony', options: ['Harmony', 'Melody', 'Music', 'Noise'], correct: 'Noise' },
+const quizData = [
+    { question: 'What is the capital of France?', options: ['Paris', 'Berlin', 'London', 'Madrid'], correct: 'Paris' },
+    { question: 'Which planet is known as the Red Planet?', options: ['Mars', 'Venus', 'Jupiter', 'Saturn'], correct: 'Mars' },
+    { question: 'What is the largest mammal on Earth?', options: ['Elephant', 'Blue Whale', 'Giraffe', 'Rhinoceros'], correct: 'Blue Whale' },
     // Add more questions...
 ];
 
 let currentQuestionIndex = 0;
 
 function showQuestion(index) {
-    const question = vocabularyQuestions[index];
-    questionElement.textContent = `Choose the correct meaning for: ${question.question}`;
+    const question = quizData[index];
+    questionElement.textContent = question.question;
     optionsElement.innerHTML = '';
 
     question.options.forEach(option => {
@@ -26,29 +25,15 @@ function showQuestion(index) {
 
 function checkAnswer(selectedOption, correctOption) {
     if (selectedOption === correctOption) {
-        alert('Correct!');
+        event.target.classList.add('correct');
     } else {
-        alert(`Wrong! The correct answer is: ${correctOption}`);
+        event.target.classList.add('wrong');
     }
-    currentQuestionIndex++;
-    if (currentQuestionIndex < vocabularyQuestions.length) {
-        showQuestion(currentQuestionIndex);
-    } else {
-        alert('Quiz completed!');
-        currentQuestionIndex = 0;
-        showQuestion(currentQuestionIndex);
-    }
-}
 
-nextBtn.addEventListener('click', () => {
-    currentQuestionIndex++;
-    if (currentQuestionIndex < vocabularyQuestions.length) {
-        showQuestion(currentQuestionIndex);
-    } else {
-        alert('Quiz completed!');
-        currentQuestionIndex = 0;
-        showQuestion(currentQuestionIndex);
-    }
-});
+    // Disable buttons after user selects an answer
+    optionsElement.querySelectorAll('button').forEach(button => {
+        button.disabled = true;
+    });
+}
 
 showQuestion(currentQuestionIndex);
