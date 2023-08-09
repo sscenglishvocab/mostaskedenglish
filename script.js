@@ -1,5 +1,6 @@
 const questionElement = document.getElementById('question');
 const optionsElement = document.getElementById('options');
+const nextBtn = document.getElementById('nextBtn');
 
 const quizData = [
     { question: 'What is the capital of France?', options: ['Paris', 'Berlin', 'London', 'Madrid'], correct: 'Paris' },
@@ -21,6 +22,8 @@ function showQuestion(index) {
         button.addEventListener('click', () => checkAnswer(option, question.correct));
         optionsElement.appendChild(button);
     });
+
+    nextBtn.style.display = 'none';
 }
 
 function checkAnswer(selectedOption, correctOption) {
@@ -34,6 +37,25 @@ function checkAnswer(selectedOption, correctOption) {
     optionsElement.querySelectorAll('button').forEach(button => {
         button.disabled = true;
     });
+
+    nextBtn.style.display = 'block';
+}
+
+function nextQuestion() {
+    // Reset button styles and enable buttons
+    optionsElement.querySelectorAll('button').forEach(button => {
+        button.classList.remove('correct', 'wrong');
+        button.disabled = false;
+    });
+
+    currentQuestionIndex++;
+    if (currentQuestionIndex < quizData.length) {
+        showQuestion(currentQuestionIndex);
+    } else {
+        questionElement.textContent = 'Quiz completed!';
+        optionsElement.innerHTML = '';
+        nextBtn.style.display = 'none';
+    }
 }
 
 showQuestion(currentQuestionIndex);
